@@ -16,8 +16,10 @@ export class Employee extends Model {
         };
 
         // Required: For MedAlertORM
+        // Assign Table Name the same as Model Name
         this.tableName(this.modelName)
             .tableFields(this.fields);
+        
         // Required: For MedAlertORM
         this.setDatabaseInstance(props.dbInstance || null);
         
