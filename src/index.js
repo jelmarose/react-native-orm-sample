@@ -21,17 +21,29 @@ class Index extends Component {
     async _fnCreateEmployees(employees = []) {
         return new Promise(async (resolve, reject) => {
             try {
+                // Initialize DB Instance
                 const employeeModel = new Employee({ dbInstance: this._databaseInstance });
 
                 // Create/update record
                 for (let employee of employees) {
+                    // Find by UUID of employee
+                    // If UUID does not exist, a new record is created.
                     await employeeModel.find(employee.uuid);
 
+                    // Updates if UUID exists.
                     for (let employeeKey of Object.keys(employee)) {
                         employeeModel.getField(employeeKey)
                             .setFieldValue(employee[employeeKey]);
                     }
+                    
+                    // For deletion
+                    // await employeeModel.remove(true) -> soft delete
+                    // await employeeModel.remove() -> hard delete
+                    
+                    employeeModel.getField('first_name')
+                        .setFieldValue('John')
 
+                    // Saves 
                     await employeeModel.save();
                 }
 
